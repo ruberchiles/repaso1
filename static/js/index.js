@@ -1,24 +1,45 @@
 //https://www.eclipse.org/paho/clients/js/
 
+
 function LED1_On() {
-        message = new Paho.MQTT.Message("L1On");
-        message.destinationName = "ruberchiles@hotmail.es/test1";
-        client.send(message);
+	console.log("led1 on");
+	message = new Paho.MQTT.Message("L1on");
+    	message.destinationName = "ruberchiles@hotmail.es/test1";
+    	client.send(message);
 }
-function LED1_Off() {
-        message = new Paho.MQTT.Message("L1Off");
-        message.destinationName = "ruberchiles@hotmail.es/test1";
-        client.send(message);
+function LED1_Off(){	
+	console.log("led1 off");
+	message = new Paho.MQTT.Message("L1off");
+    	message.destinationName = "ruberchiles@hotmail.es/test1";
+    	client.send(message);
+	//document.getElementById("sensor").innerHTML="led off";
 }
 function LED2_On() {
-        message = new Paho.MQTT.Message("L2On");
-        message.destinationName = "ruberchiles@hotmail.es/test1";
-        client.send(message);
+	console.log("led2 on");
+	message = new Paho.MQTT.Message("L2on");
+    	message.destinationName = "ruberchiles@hotmail.es/test1";
+    	client.send(message);
 }
 function LED2_Off() {
-        message = new Paho.MQTT.Message("L2Off");
-        message.destinationName = "ruberchiles@hotmail.es/test1";
-        client.send(message);
+	console.log("led2 off");
+	message = new Paho.MQTT.Message("L2off");
+    	message.destinationName = "ruberchiles@hotmail.es/test1";
+    	client.send(message);
+}
+function Historial() {
+	console.log("Historial_1");
+	message = new Paho.MQTT.Message("h");
+    	message.destinationName = "ruberchiles@hotmail.es/test1";
+    	client.send(message);
+}
+function Historial1() {
+	console.log("Historial_2");
+	message = new Paho.MQTT.Message("h1");
+    	message.destinationName = "ruberchiles@hotmail.es/test1";
+    	client.send(message);
+		//document.getElementById("sensor").innerHTML=x.split(" ")[0];
+		//document.getElementById("sensor1").innerHTML=x.split(" ")[1];
+		
 }
 // Create a client instance
   //client = new Paho.MQTT.Client("postman.cloudmqtt.com", 14970);
@@ -28,13 +49,11 @@ function LED2_Off() {
   // set callback handlers
   client.onConnectionLost = onConnectionLost;
   client.onMessageArrived = onMessageArrived;
-  
   var options = {
    useSSL: false,
     userName: "ruberchiles@hotmail.es",
     password: "Campeones1",
     onSuccess:onConnect,
-   
     onFailure:doFail
   }
 
@@ -42,14 +61,17 @@ function LED2_Off() {
   client.connect(options);
    
   // called when the client connects
-  function onConnect() {    
-    console.log("Conectado...");	
+  function onConnect() {
+    // Once a connection has been made, make a subscription and send a message.
+    console.log("Conectado...");
+	
     client.subscribe("ruberchiles@hotmail.es/test");
-    message = new Paho.MQTT.Message("hola desde la web");
+    message = new Paho.MQTT.Message("Dispositivo Conectado con la Nube");
     message.destinationName = "ruberchiles@hotmail.es/test1";
     client.send(message);
+	
   }
-   
+
   function doFail(e){
     console.log(e);
 	
@@ -63,11 +85,36 @@ function LED2_Off() {
   }
 
   // called when a message arrives
-  function onMessageArrived(message1) {
-    console.log("Hora:"+message1.payloadString);
-    document.getElementById("sensor").innerHTML=message1.payloadString.split("=")[1];
-    document.getElementById("sensor").innerHTML=message1.payloadString.split("=")[1];
-    
-  }
-  
+  function onMessageArrived(message) {
+    console.log("onMessageArrived:"+message.payloadString);
+	x=message.payloadString;	
+		//document.getElementById("sensor").innerHTML=x.split(" ")[0];
+		//document.getElementById("sensor1").innerHTML=x.split(" ")[1];
+		if(x=="LED1_ENCENDIDO"){
+		document.getElementById("sensor").innerHTML=x
+		}
+		else if(x=="LED1_APAGADO"){
+		document.getElementById("sensor").innerHTML=x
+		}
+		else if(x=="LED2_ENCENDIDO"){
+		document.getElementById("sensor1").innerHTML=x
+		}
+		else if(x=="LED2_APAGADO"){
+		document.getElementById("sensor1").innerHTML=x
+		}
+		else if(x=="LED3_ENCENDIDO"){
+		document.getElementById("sensor2").innerHTML=x
+		}
+		else if(x=="LED3_APAGADO"){
+		document.getElementById("sensor2").innerHTML=x
+		}
+		else {
+			
+			
+			document.getElementById("sensor3").innerHTML=x
+						
+		}
+			
+		
+		}
   
